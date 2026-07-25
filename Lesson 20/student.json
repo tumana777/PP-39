@@ -1,0 +1,48 @@
+{
+    "count": 2,
+    "created_at": "2026-07-16 21:33:28.001085",
+    "students": [
+        {
+            "name": "Otar",
+            "age": 35,
+            "grades": [
+                10,
+                20,
+                30
+            ],
+            "address": {
+                "city": "Tbilisi",
+                "street": "Kambarov street"
+            },
+            "is_active": true,
+            "float": 3.14,
+            "tuple": [
+                1,
+                2,
+                3
+            ],
+            "none": null
+        },
+        {
+            "name": "Saba",
+            "age": 25,
+            "grades": [
+                10,
+                20,
+                30
+            ],
+            "address": {
+                "city": "Tbilisi",
+                "street": "Kambarov street"
+            },
+            "is_active": false,
+            "float": 3.14,
+            "tuple": [
+                1,
+                2,
+                3
+            ],
+            "none": null
+        }
+    ]
+}
