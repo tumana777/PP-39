@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>User Directory</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-brand">User CRUD</div>
+    <nav class="site-nav">
+      <a href="index.html">Home</a>
+      <a href="create.html">Create</a>
+    </nav>
+  </header>
+
+  <main class="app-shell">
+    <header class="hero">
+      <h1>User Directory</h1>
+      <p>Fetched from <a href="https://crudcrud.com/api/31c29820a60448a994e7d3afc1854beb/users" target="_blank" rel="noreferrer">CRUD CRUD</a>.</p>
+    </header>
+
+    <section class="search-shell">
+      <div class="search-row">
+        <div>
+          <label class="search-label" for="searchInput">Search users</label>
+          <input id="searchInput" class="search-input" type="search" placeholder="Search by name, email, or address" autocomplete="off" />
+        </div>
+        <a class="button create-button" href="create.html">+ Add new user</a>
+      </div>
+    </section>
+
+    <section id="status" class="status">Loading users...</section>
+    <section id="userList" class="user-list"></section>
+    <nav id="pagination" class="pagination" aria-label="User pagination"></nav>
+  </main>
+
+  <footer class="site-footer">
+    <p>Simple CRUD frontend example. Data is stored on CRUD CRUD.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
