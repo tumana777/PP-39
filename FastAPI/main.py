@@ -1,4 +1,6 @@
-from fastapi import FastAPI, Query, Path
+from fastapi import FastAPI, Query, Path, HTTPException, status
+from typing import List, Optional
+from pydantic import BaseModel, Field, field_validator, model_validator
 
 app = FastAPI(
     title="My First Project",
@@ -14,7 +16,7 @@ products = [
     {"id": 5, "name": "Potato", "price": 180, "is_available": True},
     {"id": 6, "name": "Apple", "price": 250, "is_available": False},
     {"id": 7, "name": "Pineapple", "price": 120, "is_available": True},
-    {"id": 8, "name": "Cherry", "price": 150, "is_available": False}
+    {"name": "Cherry", "id": 8, "price": 150, "is_available": False}
 ]
 
 @app.get("/")
@@ -29,7 +31,104 @@ def read_root():
 #         "offset": offset,
 #     }
 
-@app.get("/products")
+# @app.get("/products")
+# def read_products(name: str | None = None, limit: int | None = None, is_available: bool = True):
+#     filtered_products = products
+#
+#     if name:
+#         filtered_products = [product for product in filtered_products if product["name"].lower() == name.lower()]
+#
+#     if limit:
+#         filtered_products = filtered_products[:limit]
+#
+#     # filtered_products = [product for product in filtered_products if product["is_available"] == is_available]
+#
+#     return filtered_products
+
+
+
+# @app.get("/products/{product_id}")
+# def read_products(product_id: int = Path(ge=1)):
+#     for product in products:
+#         if product["id"] == product_id:
+#             return product
+#
+#     return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
+
+# @app.post("/products/create", status_code=status.HTTP_201_CREATED)
+# def create_product(product: dict):
+#
+#     products.append(product)
+#
+#     return {
+#         "message": "Product created",
+#         "product": product
+#     }
+
+# class ProductCreate(BaseModel):
+#     name: str = Field(min_length=3, max_length=20)
+#     price: float = Field(gt=0)
+#     is_available: bool = True
+#     # description: Optional[str] = None
+#     description: str | None = None
+#
+# @app.post("/products/create", status_code=status.HTTP_201_CREATED)
+# def create_product(product: ProductCreate):
+#     # print(type(product))
+#     print(product.name)
+#     print(product.price)
+#     print(product.is_available)
+#     print(product.description)
+#
+#     return {
+#         "message": "Product created",
+#         "product": product
+#     }
+
+# class ProductCreate(BaseModel):
+#     name: str
+#     price: float
+#     is_available: bool = True
+#     description: str | None = None
+#
+#     @field_validator("name")
+#     @classmethod
+#     def name_must_be_uppercase(cls, value):
+#         if value.islower():
+#             raise ValueError("Name must be uppercase")
+#         return value.upper()
+#
+# @app.post("/products/create", status_code=status.HTTP_201_CREATED)
+# def create_product(product: ProductCreate):
+#     return {
+#         "message": "Product created",
+#         "product": product
+#     }
+
+
+# class ProductCreate(BaseModel):
+#     price: float = Field(gt=0)
+#     discount: float = Field(gt=0)
+#
+#     @model_validator(mode="after")
+#     def check_discount(self):
+#         if self.discount > self.price:
+#             raise ValueError("Discount must be less than price")
+#         return self
+#
+# @app.post("/products/create", status_code=status.HTTP_201_CREATED)
+# def create_product(product: ProductCreate):
+#     return {
+#         "message": "Product created",
+#         "product": product
+#     }
+
+
+class ProductResponse(BaseModel):
+    id: int
+    name: str
+
+@app.get("/products", response_model=List[ProductResponse])
 def read_products(name: str | None = None, limit: int | None = None, is_available: bool = True):
     filtered_products = products
 
@@ -39,28 +138,24 @@ def read_products(name: str | None = None, limit: int | None = None, is_availabl
     if limit:
         filtered_products = filtered_products[:limit]
 
-    filtered_products = [product for product in filtered_products if product["is_available"] == is_available]
+    # filtered_products = [product for product in filtered_products if product["is_available"] == is_available]
 
     return filtered_products
 
+class ProductDetailResponse(BaseModel):
+    id: int
+    name: str
+    price: float
+    is_available: bool
 
 
-@app.get("/products/{product_id}")
+@app.get("/products/{product_id}", response_model=ProductDetailResponse)
 def read_products(product_id: int = Path(ge=1)):
     for product in products:
         if product["id"] == product_id:
             return product
 
-    return {"message": "Product not found"}
-
-
-
-
-
-
-
-
-
+    return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Product not found")
 
 
 
