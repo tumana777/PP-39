@@ -179,7 +179,7 @@ def human_approval(state: CodeReviewState):
 # Graph
 #---------------------------------------------
 
-def build_graph():
+def build_graph(checkpointer):
     builder = StateGraph(CodeReviewState)
 
     builder.add_node("code_writer", code_writer)
@@ -188,14 +188,12 @@ def build_graph():
 
     builder.add_edge(START, "code_writer")
     builder.add_edge("code_writer", "reviewer")
-    builder.add_conditional_edge("reviewer", review_router)
+    builder.add_conditional_edges("reviewer", review_router)
     builder.add_edge("human_approval", END)
 
-    checkpointer = InMemorySaver()
+    # checkpointer = InMemorySaver()
 
     return builder.compile(checkpointer=checkpointer)
-
-graph = build_graph()
 
 
 
